@@ -6,7 +6,7 @@
 
 2. run: npm i
 
-3. rur: npm run dev (api would start to runnung in the port 4040 of your localhost)
+3. run: npm run dev (api would start to runnung in the port 4040 of your localhost)
 
 4. Next, go to the frontend directory and run: npm i
 
