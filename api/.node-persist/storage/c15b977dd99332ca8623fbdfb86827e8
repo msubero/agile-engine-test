@@ -1,0 +1,1 @@
+{"key":"transactions","value":[{"type":"credit","amount":100,"id":"1","effectiveDate":"2020-02-10T06:48:15.024Z"},{"id":"2","type":"credit","amount":100,"effectiveDate":"2020-02-10T06:48:28.701Z"},{"id":"3","type":"credit","amount":100,"effectiveDate":"2020-02-10T06:48:34.605Z"}]}
