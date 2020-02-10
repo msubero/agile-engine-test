@@ -1,5 +1,4 @@
-# agile-engine-test
-AgileEngine Full-Stack test: Money accounting system
+# Money accounting system
 
 # How do I set up?
 
