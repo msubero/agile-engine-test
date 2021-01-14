@@ -3,6 +3,7 @@ import app from "../src/app";
 import {
   casualAccountBalance,
   casualTransaction,
+  transaction,
 } from "./mocks/transactions.helper";
 import get from "lodash/fp/get";
 import times from "lodash/fp/times";
@@ -21,9 +22,9 @@ describe("TransactionsController", () => {
   });
 
   describe("GET /api/transactions", () => {
-    it("should get 423 if transactions operations are locked", async () => {
+    it("should get 409 if transactions operations are locked", async () => {
       await storage.setItem("canOperate", false);
-      await request(app).get("/api/transactions").expect(423);
+      await request(app).get("/api/transactions").expect(409);
     });
 
     it("should return the transaction history", async () => {
@@ -38,10 +39,47 @@ describe("TransactionsController", () => {
     });
   });
 
-  describe("GET /api/transactions/:id", () => {
-    it("should get 423 if transactions operations are locked", async () => {
+  describe("POST /api/transactions", () => {
+    it("should get 409 if transactions operations are locked", async () => {
       await storage.setItem("canOperate", false);
-      await request(app).get("/api/transactions/123").expect(423);
+      await request(app).post("/api/transactions").expect(409);
+    });
+
+    it("should validate required props", async () => {
+      await request(app)
+        .post("/api/transactions")
+        .send({})
+        .expect(500);
+    });
+
+    it("should refuse a transaction with negative amount", async () => {
+      await request(app)
+        .post("/api/transactions")
+        .send({ ...transaction, amount: -10 })
+        .expect(500);
+    });
+
+
+    it("should decline a debit transaction with an insufficient account balance", async () => {
+      await request(app)
+        .post("/api/transactions")
+        .send({ type: "debit", amount: 2000 })
+        .expect(409);
+    });
+
+    it("should accept a new transaction if the account balance is positive", async () => {
+      await storage.setItem("accountBalance", 5000);
+      await request(app)
+        .post("/api/transactions")
+        .send({ ...transaction, amount: 100 })
+        .expect(201);
+    });
+  });
+
+  describe("GET /api/transactions/:id", () => {
+    it("should get 409 if transactions operations are locked", async () => {
+      await storage.setItem("canOperate", false);
+      await request(app).get("/api/transactions/123").expect(409);
     });
 
     it("should get 404 if transaction was not found", async () => {
