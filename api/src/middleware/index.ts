@@ -11,5 +11,4 @@ export const corsHeaders = () => {
   };
 };
 
-
 export default { corsHeaders };

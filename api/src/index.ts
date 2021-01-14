@@ -1,16 +1,13 @@
-import { createApp } from "./app";
+import app from "./app";
 const storage = require("node-persist");
-let server;
+
 (async () => {
   await storage.init();
+  await storage.setItem("canOperate", true);
   await storage.setItem("transactions", []);
-  await storage.setItem("accountBalance", {});
+  await storage.setItem("accountBalance", 0);
 
   const port = process.env.PORT || 4040;
 
-  server = createApp().listen(port, () =>
-    console.info(`server started on port ${port}`)
-  );
+  app.listen(port, () => console.info(`server started on port ${port}`));
 })();
-
-module.exports = server;
