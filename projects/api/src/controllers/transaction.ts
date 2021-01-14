@@ -1,5 +1,5 @@
 import { transactionSchema } from "../models";
-import { getBalance, Transaction } from "../helpers/index.helper";
+import { Transaction, updatedAccountBalance } from "../helpers/index.helper";
 const storage = require("node-persist");
 
 export const all = async (req, res, next) => {
@@ -15,7 +15,7 @@ export const add = async (req, res, next) => {
 
     await storage.setItem("canOperate", false);
 
-    const newBalance = await getBalance(newTransaction);
+    const newBalance = await updatedAccountBalance(newTransaction);
 
     let statusCode = 201;
 
@@ -40,6 +40,7 @@ export const add = async (req, res, next) => {
 
     return res.sendStatus(statusCode);
   } catch (err) {
+    await storage.setItem("canOperate", true);
     return next(err.response || err);
   }
 };

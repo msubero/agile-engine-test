@@ -6,14 +6,19 @@ import {
   transaction,
 } from "./mocks/transactions.helper";
 import get from "lodash/fp/get";
+import groupBy from "lodash/fp/groupBy";
 import times from "lodash/fp/times";
+import { keys } from "lodash";
 const storage = require("node-persist");
 
 describe("TransactionsController", () => {
   beforeEach(async () => {
     await storage.init();
     await storage.setItem("canOperate", true);
-    await storage.setItem("transactions", times(casualTransaction, 5));
+    await storage.setItem(
+      "transactions",
+      times((i = 0) => casualTransaction(++i), 5)
+    );
     await storage.setItem("accountBalance", casualAccountBalance);
   });
 
@@ -46,10 +51,7 @@ describe("TransactionsController", () => {
     });
 
     it("should validate required props", async () => {
-      await request(app)
-        .post("/api/transactions")
-        .send({})
-        .expect(500);
+      await request(app).post("/api/transactions").send({}).expect(500);
     });
 
     it("should refuse a transaction with negative amount", async () => {
@@ -59,16 +61,14 @@ describe("TransactionsController", () => {
         .expect(500);
     });
 
-
     it("should decline a debit transaction with an insufficient account balance", async () => {
       await request(app)
         .post("/api/transactions")
-        .send({ type: "debit", amount: 2000 })
+        .send({ type: "debit", amount: 10000 })
         .expect(409);
     });
 
-    it("should accept a new transaction if the account balance is positive", async () => {
-      await storage.setItem("accountBalance", 5000);
+    it("should accept a new transaction if the account balance is sufficient", async () => {
       await request(app)
         .post("/api/transactions")
         .send({ ...transaction, amount: 100 })

@@ -28,32 +28,34 @@ export class Home extends Component {
   render() {
     const { isLoading, transactions } = this.state;
     return (
-      
-      <Accordion defaultActiveKey="0">
-        <h3>Transactions</h3> 
-        <hr />
-        {!isLoading ? (
+
+      <div className="container">
+        <Accordion defaultActiveKey="0" className="accordion">
+          <h3>Transactions</h3>
+          <hr />
+          {!isLoading ? (
             transactions.map((transaction) => {
               const { id, amount, type } = transaction;
               return (
-                <Card bg={type === 'debit' ? 'danger': 'success'} text="white">
+                <Card bg={type === 'debit' ? 'danger' : 'success'} text="white">
                   <Accordion.Toggle as={Card.Header} eventKey={id}>
-                  {type}: {type === 'debit' ? `-${amount}`: amount}$
+                    {type}: {type === 'debit' ? `-${amount}` : amount}$
                   </Accordion.Toggle>
                   <Accordion.Collapse eventKey={id}>
                     <Card.Body>
-                    <ul className="">
-                      {Object.keys(transaction).map(key => <li>{key}: {transaction[key]}</li>)}
-                    </ul>
+                      <ul>
+                        {Object.keys(transaction).map(key => <li>{key}: {transaction[key]}</li>)}
+                      </ul>
                     </Card.Body>
                   </Accordion.Collapse>
                 </Card>
               );
             })
           ) : (
-            <p>Loading...</p>
-          )}
-      </Accordion>
+              <p>Loading...</p>
+            )}
+        </Accordion>
+      </div>
     );
   }
 }

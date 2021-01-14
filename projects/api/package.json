@@ -1,13 +1,13 @@
 {
-  "name": "test",
+  "name": "api-accounting-notebook",
   "version": "1.0.0",
   "description": "",
   "main": "dist",
   "scripts": {
     "start": "node dist",
     "build": "tsc",
-    "dev": "nodemon src -x ts-node -w src -e ts",
-    "test": "jest --watchAll --config ./jestconfig.json"
+    "dev": "npm i && nodemon src -x ts-node -w src -e ts",
+    "test": "jest --config ./jestconfig.json"
   },
   "author": "mariasuberop@gmail.com",
   "license": "ISC",
