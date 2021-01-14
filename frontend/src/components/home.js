@@ -19,7 +19,7 @@ export class Home extends Component {
     const url = 'http://localhost:4040/api/transactions'
     axios.get(url)
       .then(({ data }) => {
-        const transactions = data.transactions
+        const transactions = data
         this.setState({ transactions, isLoading: false })
       })
       .catch(err => console.log({ err }))
@@ -34,7 +34,7 @@ export class Home extends Component {
         <hr />
         {!isLoading ? (
             transactions.map((transaction) => {
-              const { id, amount, type, effectiveDate } = transaction;
+              const { id, amount, type } = transaction;
               return (
                 <Card bg={type === 'debit' ? 'danger': 'success'} text="white">
                   <Accordion.Toggle as={Card.Header} eventKey={id}>
