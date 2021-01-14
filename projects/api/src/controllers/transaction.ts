@@ -2,13 +2,13 @@ import { transactionSchema } from "../models";
 import { Transaction, updatedAccountBalance } from "../helpers/index.helper";
 const storage = require("node-persist");
 
-export const all = async (req, res, next) => {
+export const all = async (req, res, next): Promise<Transaction[]> => {
   const transactions = storage.getItem("transactions");
 
   return await transactions.then((results) => res.json(results)).catch(next);
 };
 
-export const add = async (req, res, next) => {
+export const add = async (req, res, next): Promise<void> => {
   try {
     const newTransaction = req.body;
     await transactionSchema.validateAsync(newTransaction);
@@ -45,7 +45,7 @@ export const add = async (req, res, next) => {
   }
 };
 
-export const get = async (req, res, next) => {
+export const get = async (req, res, next): Promise<Transaction> => {
   const transactions = storage.getItem("transactions");
   return await transactions
     .then((results) => {

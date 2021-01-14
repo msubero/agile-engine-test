@@ -1,7 +1,5 @@
 # Accounting notebook
 
-[![MIT License][license-badge]][license]
-
 Node.js and React.js money account system
 
 ## About
@@ -51,7 +49,7 @@ No real persistence is expected. No DB integrations were made.
 3. Any transaction that results in a negative amount within the system must be rejected.
 4. The application must store the transaction history.
 5. Storage must be able to handle multiple transactions at the same time, where read transactions must not lock storage and write transactions must lock read and write operations.
-6. Minimal scope of operations required: `GET /`, `POST /` and `GET /:id`
+6. Minimal scope of operations required: `GET /transactions`, `POST /transactions` and `GET /transactions/:id`. 
 
 **UI/UX requirements:**
 
