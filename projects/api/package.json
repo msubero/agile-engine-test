@@ -14,7 +14,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "express": "^4.17.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "node-persist": "^3.0.5"
   },
   "devDependencies": {
